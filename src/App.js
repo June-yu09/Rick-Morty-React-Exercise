@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef} from 'react';
 import './App.css';
 import Characters from './components/Characters.js';
 import Loading from './components/Loading.js';
-import { Form, Navbar, FormControl } from 'react-bootstrap';
+import { Form, Navbar, FormControl, Button } from 'react-bootstrap';
 
 
 function App() {
@@ -10,11 +10,13 @@ function App() {
   let [myInput, setMyInput] = useState('');
   let [loading, setLoading] = useState(true);
   let [displayingData, setDisplayingData] = useState([]);
+  let [myPage, setMyPage] =useState(1);
   
   const inputRef = useRef('');
+  const isInitial = useRef(true);
 
   const fetchAPI = ()=>{
-    fetch('https://rickandmortyapi.com/api/character/')
+    fetch(`https://rickandmortyapi.com/api/character/?page=${myPage}`)
     .then(response=>response.json())
     .then(data=>{
       return data.results
@@ -29,7 +31,8 @@ function App() {
   useEffect(()=>{
     fetchAPI();
     setLoading(false);
-  },[])
+    console.log('fetchAPI effect is rendering now');
+  },[myPage])
 
 
   function matchingName(){
@@ -39,28 +42,30 @@ function App() {
         displayData.push(obj);
       }
     });
+    console.log(displayData)
     setDisplayingData(displayData);
   }
 
   useEffect(()=>{
-    if(myData){
-      matchingName();
-      console.log("works")
-      console.log(myData);
+    if(isInitial.current){
+      isInitial.current = false;
+      console.log('Input first rendering ...');
     }else{
-      console.log('my data is still empty')
+      matchingName();
+      console.log('Input is updating....');
     }
-  },[myInput])
+  },[myInput, myPage])
 
   useEffect(()=>{
     inputRef.current.focus();
   },[])
 
+
   return (
     <div className="App">
 
       <div>
-          <Navbar bg="primary" variant="dark">
+          <Navbar bg="primary" className="justify-content-center" variant="dark">
               <Form className="searchInput" inline>
                   <FormControl ref={inputRef} onChange={(e)=>{
                     setMyInput(e.target.value);
@@ -69,14 +74,58 @@ function App() {
               </Form>
           </Navbar>
       </div>
-      { myInput }
       
       
       <Loading loading={loading} />
 
       
 
-      <Characters wholeData={ displayingData } />
+      <div className='flexContainer'>
+        <div className='row'>
+          <Characters wholeData={ displayingData } />
+
+
+        </div>
+
+      </div>
+
+      <div className='arrowContainer'>
+        <div className="row  justify-content-center" >
+          {
+            myPage===1
+            ?<Button variant="primary" className='col-xs-2 justify-content-center' onClick={()=>{
+              setMyPage(myPage-1);
+            }} disabled>
+              이전 페이지
+            </Button>
+            :<Button variant="primary" className='col-xs-2 justify-content-center' onClick={()=>{
+              setMyPage(myPage-1);
+            }}>이전 페이지
+              
+            </Button>
+          }
+
+          {
+            myPage===34
+            ?<Button variant="primary" className='col-xs-2 justify-content-center' onClick={()=>{
+              setMyPage(myPage+1);
+            }} disabled>다음 페이지
+              
+            </Button>
+            :<Button variant="primary" className='col-xs-2 justify-content-center' onClick={()=>{
+              setMyPage(myPage+1);
+            }}>다음 페이지
+              
+            </Button>
+          }
+          
+          
+
+
+          
+        </div>
+
+      </div>
       
       
     </div>
