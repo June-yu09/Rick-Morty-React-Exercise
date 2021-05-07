@@ -13,7 +13,6 @@ function App() {
   let [myPage, setMyPage] =useState(1);
   
   const inputRef = useRef('');
-  const isInitial = useRef(true);
 
   const fetchAPI = ()=>{
     fetch(`https://rickandmortyapi.com/api/character/?page=${myPage}`)
@@ -23,38 +22,36 @@ function App() {
     })
     .then(d=>{
       setData(d);
-      setDisplayingData(d);
+      matchingName(d);
     })
-    
-  }
+    }
   
-  useEffect(()=>{
+  useEffect( ()=>{
     fetchAPI();
     setLoading(false);
     console.log('fetchAPI effect is rendering now');
+    console.log('myPage Number is ', myPage);
   },[myPage])
 
 
-  function matchingName(){
-    let displayData = [];
-    myData.forEach(obj=>{
-      if (((obj.name).toUpperCase()).includes(myInput.toUpperCase())){
-        displayData.push(obj);
-      }
-    });
-    console.log(displayData)
-    setDisplayingData(displayData);
+  function matchingName(data){
+    if(myInput.length!== 0){
+      let displayData = [];
+      data.forEach(obj=>{
+        if (((obj.name).toUpperCase()).includes(myInput.toUpperCase())){
+          displayData.push(obj);
+        }
+      });
+      console.log(displayData)
+      setDisplayingData(displayData);
+    } else {
+      setDisplayingData(data);
+    }
   }
 
   useEffect(()=>{
-    if(isInitial.current){
-      isInitial.current = false;
-      console.log('Input first rendering ...');
-    }else{
-      matchingName();
-      console.log('Input is updating....');
-    }
-  },[myInput, myPage])
+    matchingName(myData);
+  },[myInput])
 
   useEffect(()=>{
     inputRef.current.focus();
