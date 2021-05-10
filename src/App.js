@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState, useEffect, useRef} from 'react';
 import './App.css';
 import Characters from './components/Characters.js';
