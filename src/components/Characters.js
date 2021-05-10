@@ -14,10 +14,10 @@ function Characters(props) {
                     props.wholeData.map((d)=>{
 
                         return (
-                            <div key={d.id} className="flipCard col-3">
+                            <div key={d.id} className="flipCard justify-content-center">
                                 
                             
-                                <div className="flipCardInner">
+                                <div className="flipCardInner justify-content-center">
                                     <div className="flipCardFront">
                                         <img className='characterImage' key={d.id} src={d.image} alt="characterImage"  />
                                     </div>
@@ -31,7 +31,7 @@ function Characters(props) {
                                             <Modal.Header closeButton>
                                             <Modal.Title><h1> { d.name } </h1></Modal.Title>
                                             </Modal.Header>
-                                            <Modal.Body>
+                                            <Modal.Body className="theModalBody">
                                                 <img className='characterImage'  src={d.image} alt="characterImage"  />
                                                 <p>Status: { d.status } </p>
                                                 <p>Gender: { d.gender }  </p>

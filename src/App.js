@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef} from 'react';
 import './App.css';
 import Characters from './components/Characters.js';
 import Loading from './components/Loading.js';
-import { Form, Navbar, FormControl, Button } from 'react-bootstrap';
+import { Form, Navbar, FormControl, Button, Row } from 'react-bootstrap';
 
 
 function App() {
@@ -23,14 +23,12 @@ function App() {
     .then(d=>{
       setData(d);
       matchingName(d);
+      setLoading(false);
     })
     }
   
   useEffect( ()=>{
     fetchAPI();
-    setLoading(false);
-    console.log('fetchAPI effect is rendering now');
-    console.log('myPage Number is ', myPage);
   },[myPage])
 
 
@@ -42,7 +40,6 @@ function App() {
           displayData.push(obj);
         }
       });
-      console.log(displayData)
       setDisplayingData(displayData);
     } else {
       setDisplayingData(data);
@@ -78,24 +75,21 @@ function App() {
       
 
       <div className='flexContainer'>
-        <div className='row'>
+      
           <Characters wholeData={ displayingData } />
-
-
-        </div>
-
+     
       </div>
 
       <div className='arrowContainer'>
-        <div className="row  justify-content-center" >
+        <div className="row justify-content-center" >
           {
             myPage===1
-            ?<Button variant="primary" className='col-xs-2 justify-content-center' onClick={()=>{
+            ?<Button variant="primary" className='col-xs-2 justify-content-center belowButton' onClick={()=>{
               setMyPage(myPage-1);
             }} disabled>
               이전 페이지
             </Button>
-            :<Button variant="primary" className='col-xs-2 justify-content-center' onClick={()=>{
+            :<Button variant="primary" className='col-xs-2 justify-content-center belowButton' onClick={()=>{
               setMyPage(myPage-1);
             }}>이전 페이지
               
@@ -104,12 +98,12 @@ function App() {
 
           {
             myPage===34
-            ?<Button variant="primary" className='col-xs-2 justify-content-center' onClick={()=>{
+            ?<Button variant="primary" className='col-xs-2 justify-content-center belowButton' onClick={()=>{
               setMyPage(myPage+1);
             }} disabled>다음 페이지
               
             </Button>
-            :<Button variant="primary" className='col-xs-2 justify-content-center' onClick={()=>{
+            :<Button variant="primary" className='col-xs-2 justify-content-center belowButton' onClick={()=>{
               setMyPage(myPage+1);
             }}>다음 페이지
               
