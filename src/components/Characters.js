@@ -1,4 +1,4 @@
-import '/Users/jiyoonyu/Desktop/coding/Rick_Morty_React_Exercise/src/App.css';
+import './characters.css';
 import { Button, Modal } from 'react-bootstrap';
 import { useState } from 'react';
 
